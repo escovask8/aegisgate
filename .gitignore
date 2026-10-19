@@ -1,0 +1,180 @@
+# ==============================================================================
+# AegisGate - Comprehensive .gitignore (Java 21, Spring Boot, Python 3, Cloud)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Java & Maven Build Outputs
+# ------------------------------------------------------------------------------
+target/
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+# Maven specific
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ------------------------------------------------------------------------------
+# 2. Python Bytecode, Caches & Environments
+# ------------------------------------------------------------------------------
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing & Coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ------------------------------------------------------------------------------
+# 3. IDEs, Editors & Tooling
+# ------------------------------------------------------------------------------
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# Visual Studio Code / Windsurf / Cursor
+.vscode/
+.vscode-test/
+*.code-workspace
+.cursor/
+.windsurf/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# ------------------------------------------------------------------------------
+# 4. Secrets, Sensitive Data & Local Configurations
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pkcs12
+*.pfx
+*.p12
+*.cer
+*.crt
+credentials
+credentials.json
+aws-credentials
+service-account*.json
+*token*
+*secret*
+!*secret*.*.example
+
+# ------------------------------------------------------------------------------
+# 5. OS & Temporary Files
+# ------------------------------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ------------------------------------------------------------------------------
+# 6. Logs & Run-time Dumps
+# ------------------------------------------------------------------------------
+*.log
+logs/
+**/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ------------------------------------------------------------------------------
+# 7. Local Scratch / Temp Files
+# ------------------------------------------------------------------------------
+scratch/
+**/scratch/
+tmp/
+**/tmp/

@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: aegisgate-engine
+
+aegisgate:
+  decider:
+    service-url: ${DECIDER_SERVICE_URL:http://localhost:8000}
+    timeout-ms: 3000
+  bedrock:
+    mode: ${BEDROCK_MODE:local} # "local" or "aws"
+    model-id: ${BEDROCK_MODEL_ID:anthropic.claude-3-5-sonnet-20240620-v1:0}
+    region: ${AWS_REGION:us-east-1}
+  threshold:
+    production: 0.93
+    uat: 0.85
+
+logging:
+  level:
+    com.aegisgate: INFO
+    org.springframework.web: INFO
+

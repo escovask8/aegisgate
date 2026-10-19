@@ -1,0 +1,97 @@
+# Exemplo de Integração do AegisGate no GitLab CI/CD (.gitlab-ci.yml)
+stages:
+  - test
+  - security-scan
+  - aegis-promotion-gate
+  - deploy-production
+
+variables:
+  AEGISGATE_URL: "http://aegisgate.internal.corp:8080" # URL do AegisGate na sua rede/VPC ou localhost se sidecar
+
+# Etapa 1: Execução de testes normais
+unit-tests:
+  stage: test
+  image: maven:3.9.9-eclipse-temurin-21
+  script:
+    - mvn test
+  artifacts:
+    when: always
+    reports:
+      junit: target/surefire-reports/*.xml
+    paths:
+      - target/surefire-reports/
+
+# Etapa 2: Scanner de Vulnerabilidades de Segurança (Trivy / Snyk)
+security-scan:
+  stage: security-scan
+  image: aquasec/trivy:latest
+  script:
+    - trivy fs --format table --output trivy-report.txt .
+  artifacts:
+    paths:
+      - trivy-report.txt
+
+# Etapa 3: Portão Inteligente AegisGate (Strands Decider 2B + Bedrock)
+aegis-production-gate:
+  stage: aegis-promotion-gate
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache curl jq
+  script:
+    - echo "=== Acionando o AegisGate para Avaliação Autônoma de Promoção ==="
+    # 1. Compila o snapshot de telemetria da build
+    - |
+      SNAPSHOT=$(cat <<EOF
+      Commit: ${CI_COMMIT_SHA}
+      Branch: ${CI_COMMIT_REF_NAME}
+      Pipeline: #${CI_PIPELINE_ID}
+      Relatório de Testes: $(cat target/surefire-reports/*.txt 2>/dev/null | head -n 10 || echo "Testes Aprovados")
+      Vulnerabilidades: $(cat trivy-report.txt 2>/dev/null | grep -E "CRITICAL|HIGH" || echo "Zero vulnerabilidades críticas")
+      Deploy Window: $(date -u +"%A %H:%M UTC")
+      EOF
+      )
+    # 2. Envia para o AegisGate e captura o código HTTP e a resposta
+    - |
+      HTTP_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${AEGISGATE_URL}/api/v1/gates/production/evaluate" \
+        -H "Content-Type: text/plain" \
+        -d "$SNAPSHOT")
+      
+      HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)
+      HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$d')
+
+    - echo "Status HTTP do AegisGate: $HTTP_STATUS"
+    - echo "Resposta: $HTTP_BODY"
+
+    # 3. Fast-Path: HTTP 200 libera o pipeline instantaneamente
+    - |
+      if [ "$HTTP_STATUS" -eq 200 ]; then
+        echo "✅ [AEGISGATE FAST-PATH]: Release aprovado com alta certeza pelo Strands Decider 2B!"
+        echo "Avançando esteira para produção automaticamente (Zero-Touch)."
+        exit 0
+      fi
+
+    # 4. Smart-Fallback: HTTP 422 bloqueia o pipeline e comenta no Merge Request
+    - |
+      echo "❌ [AEGISGATE BLOCKED]: Release bloqueado pela política de governança."
+      EXPLANATION=$(echo "$HTTP_BODY" | jq -r '.detailedExplanation // .reason')
+      echo "=== PARECER TÉCNICO AMAZON BEDROCK ==="
+      echo "$EXPLANATION"
+
+      # Se estiver em um Merge Request, comenta automaticamente o parecer técnico
+      if [ -n "$CI_MERGE_REQUEST_IID" ] && [ -n "$GITLAB_TOKEN" ]; then
+        curl -s -X POST "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes" \
+          -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+          -H "Content-Type: application/json" \
+          -d "{\"body\": \"🛡️ **AegisGate Gatekeeper Alert**\n\n${EXPLANATION}\"}"
+      fi
+
+      exit 1
+
+# Etapa 4: Deploy em Produção (Executada somente se o AegisGate aprovar com HTTP 200)
+deploy-production:
+  stage: deploy-production
+  script:
+    - echo "Executando deploy em produção aprovado pelo AegisGate..."
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+

@@ -1,0 +1,19 @@
+{
+  "taskKey": "AEGIS-1001",
+  "title": "AegisGate: Autonomous Zero-Touch Promotion Engine",
+  "description": "Desenvolver a solução completa descrita na especificação técnica (spec.md) com os dois componentes reutilizáveis exigidos pelo Hackathon da AWS (Python Strands Decider Interceptor e Java Spring Boot Starter), além do Engine central com execução e testes locais e em nuvem AWS.",
+  "acceptanceCriteria": [
+    "AC1: Fast-Path com Strands Decider 2B avalia métricas de release e responde em <150ms com decisão determinística e confiança calibrada.",
+    "AC2: Decisão de alta confiança (confiança >= threshold) libera o pipeline imediatamente (HTTP 200 Fast-Path Zero-Touch).",
+    "AC3: Smart-Fallback aciona Bedrock (Claude 3.5 Sonnet) quando a confiança < threshold ou quando o release for rejeitado (HTTP 422 com 3 bullet points acionáveis).",
+    "AC4: Resiliência Fail-Closed: caso o sidecar/Decider esteja indisponível, o gate bloqueia preventivamente o deploy.",
+    "AC5: Reusable Asset 1 (Python): AegisPolicyInterventionHandler e servidor sidecar FastAPI empacotados e funcionais.",
+    "AC6: Reusable Asset 2 (Java): aegis-gatekeeper-spring-boot-starter com autoconfiguração e injeção do AegisGatekeeperService.",
+    "AC7: Capacidade de execução e validação completa tanto em modo local (sem dependência externa) quanto na AWS (com credenciais e Bedrock real)."
+  ],
+  "baseBranch": "main",
+  "featureBranch": "feature/AEGIS-1001-zero-touch-promotion-engine",
+  "maxIterations": 5,
+  "createdAt": "2026-10-19T19:25:00Z"
+}
+

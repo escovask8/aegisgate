@@ -1,0 +1,50 @@
+name: AegisGate Promotion Gate
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  evaluate-promotion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Unit Tests
+        run: |
+          echo "Running build and tests..."
+          # mvn test / npm test
+
+      - name: Evaluate Production Gate via AegisGate
+        id: aegis_gate
+        run: |
+          SNAPSHOT="Build: ${{ github.run_id }}. Commit: ${{ github.sha }}. JUnit: 100% passed. CVEs: 0. SLAs: 85ms."
+
+          HTTP_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "http://aegisgate.internal.corp:8080/api/v1/gates/production/evaluate" \
+            -H "Content-Type: text/plain" \
+            -d "$SNAPSHOT")
+
+          HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)
+          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$d')
+
+          echo "http_status=$HTTP_STATUS" >> $GITHUB_OUTPUT
+          echo "body=$HTTP_BODY" >> $GITHUB_OUTPUT
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "AegisGate blocked the release candidate."
+            exit 1
+          fi
+
+      - name: Comment on PR if Blocked
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🛡️ **AegisGate Incident Report**\n\nThe deployment was blocked by policy:\n\`\`\`\n${{ steps.aegis_gate.outputs.body }}\n\`\`\``
+            })
+

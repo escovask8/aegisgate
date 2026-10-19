@@ -1,0 +1,9 @@
+# Configuration profile for deployment in AWS (ECS, EKS, EC2, App Runner)
+aegisgate:
+  bedrock:
+    mode: aws
+    model-id: anthropic.claude-3-5-sonnet-20240620-v1:0
+    region: ${AWS_REGION:us-east-1}
+  decider:
+    service-url: ${DECIDER_SERVICE_URL:http://localhost:8000}
+
