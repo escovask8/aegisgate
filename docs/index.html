@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AegisGate: Autonomous Zero-Touch Promotion Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glow-green { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
+    .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+    .glow-purple { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+  </style>
+</head>
+<body id="page-body" class="bg-slate-950 text-slate-100 antialiased p-4 sm:p-8 transition-colors duration-200 min-h-screen">
+
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header Section -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 card-box">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40">AWS Hackathon Project</span>
+          <span class="px-3 py-1 text-xs font-bold rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40">#strands-decider-2b</span>
+          <span class="px-3 py-1 text-xs font-bold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">#policy</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white mt-3 tracking-tight main-title">AegisGate: Autonomous Zero-Touch Promotion Engine</h1>
+        <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed sub-title">
+          Motor inteligente de governança CI/CD: Decisão determinística em <strong class="text-emerald-400 font-bold">~115ms</strong> (Strands Decider 2B) com síntese profunda de risco via <strong class="text-purple-300 font-bold">Amazon Bedrock (Claude 3.5 Sonnet)</strong>.
+        </p>
+      </div>
+
+      <!-- Theme Switcher & Status -->
+      <div class="flex items-center md:flex-col md:items-end justify-between gap-3 border-t md:border-t-0 pt-3 md:pt-0 border-slate-800">
+        <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition cursor-pointer">
+          <span id="theme-icon">☀️</span> <span id="theme-text">Modo Claro</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Fast-Path Online</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulator Interactive Controls -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl card-box">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-5">
+        <div>
+          <h2 class="text-lg font-bold text-white section-title">Simulador Interativo de Promoção</h2>
+          <p class="text-sm text-slate-300 mt-0.5">Clique em um dos 3 cenários para disparar a orquestração do pipeline em tempo real:</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Scenario 1 -->
+        <button id="btn-fastpath" onclick="simulate('fastpath')" class="p-4 rounded-xl border-2 border-emerald-500/50 bg-emerald-950/30 hover:bg-emerald-900/40 transition text-left flex flex-col justify-between group cursor-pointer shadow-sm">
+          <div class="flex items-center justify-between w-full">
+            <span class="text-xs font-extrabold px-2.5 py-1 rounded bg-emerald-500 text-slate-950">CENÁRIO 1</span>
+            <span class="text-xs font-bold text-emerald-300 font-mono">⚡ ~115ms</span>
+          </div>
+          <div class="mt-3">
+            <div class="font-bold text-base text-white group-hover:text-emerald-300 transition">Release 100% Saudável</div>
+            <div class="text-xs text-slate-300 mt-1">Testes 100%, 0 CVEs, SLAs conformes. Fast-Path aprovado instantaneamente.</div>
+          </div>
+        </button>
+
+        <!-- Scenario 2 -->
+        <button id="btn-security" onclick="simulate('security')" class="p-4 rounded-xl border-2 border-rose-500/50 bg-rose-950/30 hover:bg-rose-900/40 transition text-left flex flex-col justify-between group cursor-pointer shadow-sm">
+          <div class="flex items-center justify-between w-full">
+            <span class="text-xs font-extrabold px-2.5 py-1 rounded bg-rose-500 text-white">CENÁRIO 2</span>
+            <span class="text-xs font-bold text-rose-300 font-mono">🛡️ Fallback</span>
+          </div>
+          <div class="mt-3">
+            <div class="font-bold text-base text-white group-hover:text-rose-300 transition">Risco Crítico (CVE-2026)</div>
+            <div class="text-xs text-slate-300 mt-1">Vulnerabilidade detectada. Bloqueio + Relatório executivo Bedrock.</div>
+          </div>
+        </button>
+
+        <!-- Scenario 3 -->
+        <button id="btn-ambiguous" onclick="simulate('ambiguous')" class="p-4 rounded-xl border-2 border-amber-500/50 bg-amber-950/30 hover:bg-amber-900/40 transition text-left flex flex-col justify-between group cursor-pointer shadow-sm">
+          <div class="flex items-center justify-between w-full">
+            <span class="text-xs font-extrabold px-2.5 py-1 rounded bg-amber-500 text-slate-950">CENÁRIO 3</span>
+            <span class="text-xs font-bold text-amber-300 font-mono">⚠️ Confiança &lt; Limiar</span>
+          </div>
+          <div class="mt-3">
+            <div class="font-bold text-base text-white group-hover:text-amber-300 transition">Ambiguidade / Incerteza</div>
+            <div class="text-xs text-slate-300 mt-1">Métricas incompletas. Confiança de 0.72 ativa auditoria Bedrock.</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Pipeline Visual Flow Diagram -->
+      <div class="mt-8 border border-slate-800 rounded-xl p-5 bg-slate-950/80 flow-container">
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center justify-between">
+          <span class="text-slate-300">Fluxo Arquitetural da Decisão</span>
+          <span id="exec-timer" class="text-xs font-mono font-bold text-purple-300 bg-purple-950/60 px-3 py-1 rounded-full border border-purple-500/30">Pronto para simular</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+          
+          <!-- Node 1: CI/CD Event -->
+          <div id="node-ci" class="p-4 rounded-xl border-2 border-slate-700 bg-slate-900 transition-all duration-300 node-box">
+            <div class="text-xs text-blue-300 font-mono font-bold uppercase">1. Gatilho CI/CD</div>
+            <div class="font-bold text-sm text-white mt-1">Promotion Request</div>
+            <div class="text-xs text-slate-300 mt-1">JUnit, Trivy, Git Diff</div>
+          </div>
+
+          <!-- Node 2: Strands Decider 2B -->
+          <div id="node-decider" class="p-4 rounded-xl border-2 border-slate-700 bg-slate-900 transition-all duration-300 node-box">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-purple-300 font-mono font-bold uppercase">2. Decider 2B</span>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-200 border border-purple-500/30">Sidecar</span>
+            </div>
+            <div class="font-bold text-sm text-white mt-1" id="node-decider-choice">Aguardando...</div>
+            <div class="text-xs text-slate-300 mt-1 flex justify-between">
+              <span id="node-decider-conf">Confiança: -</span>
+              <span id="node-decider-lat">Latência: -</span>
+            </div>
+          </div>
+
+          <!-- Node 3: Routing Engine -->
+          <div id="node-router" class="p-4 rounded-xl border-2 border-slate-700 bg-slate-900 transition-all duration-300 node-box">
+            <div class="text-xs text-slate-300 font-mono font-bold uppercase">3. Roteamento</div>
+            <div class="font-bold text-sm text-white mt-1" id="node-router-title">Fast-Path vs Fallback</div>
+            <div class="text-xs text-slate-300 mt-1" id="node-router-detail">Limiar &tau; &ge; 0.93</div>
+          </div>
+
+          <!-- Node 4: Final Outcome -->
+          <div id="node-outcome" class="p-4 rounded-xl border-2 border-slate-700 bg-slate-900 transition-all duration-300 node-box">
+            <div class="text-xs text-slate-300 font-mono font-bold uppercase">4. Ação Final</div>
+            <div class="font-bold text-sm text-white mt-1" id="node-outcome-title">Pronto para Teste</div>
+            <div class="text-xs text-slate-300 mt-1" id="node-outcome-detail">Status HTTP</div>
+          </div>
+        </div>
+
+        <!-- Dynamic Output Box -->
+        <div id="detail-panel" class="mt-6 p-5 rounded-xl border-2 border-slate-700 bg-slate-900 hidden panel-box">
+          <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-3">
+            <span class="font-bold text-sm text-white" id="detail-title">Relatório de Execução</span>
+            <span class="text-xs font-mono font-bold px-3 py-1 rounded-full shadow-sm" id="detail-badge">HTTP 200</span>
+          </div>
+          <pre id="detail-content" class="text-xs font-mono whitespace-pre-wrap text-emerald-300 bg-slate-950 p-4 rounded-lg border border-slate-800 overflow-x-auto leading-relaxed"></pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Comparative Metrics & Value Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl card-box">
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-bold">Velocidade de Decisão</div>
+        <div class="text-3xl font-extrabold text-emerald-400 mt-2">~115 ms</div>
+        <div class="text-xs text-slate-300 mt-2 leading-relaxed">
+          Comparado a <strong class="text-white">4.200 ms</strong> de uma LLM de grande porte e <strong class="text-white">45 min</strong> de reuniões manuais de aprovação.
+        </div>
+        <div class="w-full bg-slate-950 h-2 rounded-full mt-3 overflow-hidden border border-slate-800">
+          <div class="bg-emerald-500 h-full rounded-full" style="width: 97%;"></div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl card-box">
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-bold">Economia de Custo</div>
+        <div class="text-3xl font-extrabold text-purple-400 mt-2">90% Menor</div>
+        <div class="text-xs text-slate-300 mt-2 leading-relaxed">
+          De <strong class="text-white">$20.00 / 1k builds</strong> (LLM pura) para <strong class="text-white">~$1.50</strong> com Strands Decider 2B local executando os deploys de rotina.
+        </div>
+        <div class="w-full bg-slate-950 h-2 rounded-full mt-3 overflow-hidden border border-slate-800">
+          <div class="bg-purple-500 h-full rounded-full" style="width: 90%;"></div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl card-box">
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-bold">Resiliência Operacional</div>
+        <div class="text-3xl font-extrabold text-blue-400 mt-2">Fail-Closed</div>
+        <div class="text-xs text-slate-300 mt-2 leading-relaxed">
+          Se o Decider ou rede caírem, a esteira é <strong class="text-white">preventivamente bloqueada</strong> com registro imutável no log de auditoria.
+        </div>
+        <div class="w-full bg-slate-950 h-2 rounded-full mt-3 overflow-hidden border border-slate-800">
+          <div class="bg-blue-500 h-full rounded-full" style="width: 100%;"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let isLight = false;
+
+    function toggleTheme() {
+      isLight = !isLight;
+      const body = document.getElementById('page-body');
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+      const cards = document.querySelectorAll('.card-box');
+      const nodeBoxes = document.querySelectorAll('.node-box');
+      const flowContainer = document.querySelector('.flow-container');
+      const mainTitle = document.querySelector('.main-title');
+      const subTitle = document.querySelector('.sub-title');
+      const sectionTitle = document.querySelector('.section-title');
+
+      if (isLight) {
+        body.className = "bg-slate-100 text-slate-900 antialiased p-4 sm:p-8 transition-colors duration-200 min-h-screen";
+        icon.innerText = "🌙";
+        text.innerText = "Modo Escuro";
+        mainTitle.className = "text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 tracking-tight main-title";
+        subTitle.className = "text-slate-600 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed sub-title";
+        sectionTitle.className = "text-lg font-bold text-slate-900 section-title";
+        flowContainer.className = "mt-8 border border-slate-300 rounded-xl p-5 bg-slate-50 flow-container";
+        cards.forEach(c => c.className = "bg-white border border-slate-200 rounded-2xl p-6 shadow-md card-box text-slate-900");
+        nodeBoxes.forEach(n => n.className = "p-4 rounded-xl border-2 border-slate-300 bg-white transition-all duration-300 node-box");
+      } else {
+        body.className = "bg-slate-950 text-slate-100 antialiased p-4 sm:p-8 transition-colors duration-200 min-h-screen";
+        icon.innerText = "☀️";
+        text.innerText = "Modo Claro";
+        mainTitle.className = "text-2xl sm:text-3xl font-extrabold text-white mt-3 tracking-tight main-title";
+        subTitle.className = "text-slate-300 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed sub-title";
+        sectionTitle.className = "text-lg font-bold text-white section-title";
+        flowContainer.className = "mt-8 border border-slate-800 rounded-xl p-5 bg-slate-950/80 flow-container";
+        cards.forEach(c => c.className = "bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl card-box text-slate-100");
+        nodeBoxes.forEach(n => n.className = "p-4 rounded-xl border-2 border-slate-700 bg-slate-900 transition-all duration-300 node-box");
+      }
+    }
+
+    function simulate(scenario) {
+      const nodeCi = document.getElementById('node-ci');
+      const nodeDecider = document.getElementById('node-decider');
+      const nodeRouter = document.getElementById('node-router');
+      const nodeOutcome = document.getElementById('node-outcome');
+      const timer = document.getElementById('exec-timer');
+
+      const panel = document.getElementById('detail-panel');
+      const panelTitle = document.getElementById('detail-title');
+      const panelBadge = document.getElementById('detail-badge');
+      const panelContent = document.getElementById('detail-content');
+
+      // Reset
+      [nodeCi, nodeDecider, nodeRouter, nodeOutcome].forEach(n => {
+        n.className = isLight 
+          ? "p-4 rounded-xl border-2 border-slate-300 bg-white transition-all duration-300 node-box" 
+          : "p-4 rounded-xl border-2 border-slate-700 bg-slate-900 transition-all duration-300 node-box";
+      });
+      panel.classList.add('hidden');
+      timer.innerText = "Iniciando orquestração...";
+
+      // Step 1: CI
+      nodeCi.classList.add('border-blue-500', isLight ? 'bg-blue-50' : 'bg-blue-950/40');
+
+      setTimeout(() => {
+        // Step 2: Decider
+        nodeDecider.classList.add('border-purple-500', isLight ? 'bg-purple-50' : 'bg-purple-950/40', 'glow-purple');
+
+        if (scenario === 'fastpath') {
+          document.getElementById('node-decider-choice').innerText = "ZERO_TOUCH_DEPLOY";
+          document.getElementById('node-decider-choice').className = "font-extrabold text-sm mt-1 text-emerald-400";
+          document.getElementById('node-decider-conf').innerText = "Confiança: 0.97";
+          document.getElementById('node-decider-lat').innerText = "Latência: 115ms";
+
+          setTimeout(() => {
+            // Step 3: Fast-Path Router
+            nodeRouter.classList.add('border-emerald-500', isLight ? 'bg-emerald-50' : 'bg-emerald-950/40');
+            document.getElementById('node-router-title').innerText = "Fast-Path Aprovado";
+            document.getElementById('node-router-detail').innerText = "Confiança (0.97) >= Limiar (0.93)";
+
+            setTimeout(() => {
+              // Step 4: Outcome Deploy
+              nodeOutcome.classList.add('border-emerald-500', isLight ? 'bg-emerald-100' : 'bg-emerald-950/60', 'glow-green');
+              document.getElementById('node-outcome-title').innerText = "Deploy Liberado ✅";
+              document.getElementById('node-outcome-title').className = "font-extrabold text-sm mt-1 text-emerald-400";
+              document.getElementById('node-outcome-detail').innerText = "HTTP 200 OK (0 tokens Bedrock)";
+              timer.innerText = "Concluído em 115ms (Fast-Path Instantâneo)";
+
+              panel.classList.remove('hidden');
+              panelTitle.innerText = "Resultado: Fast-Path Zero-Touch Promotion";
+              panelBadge.innerText = "HTTP 200 OK";
+              panelBadge.className = "text-xs font-mono font-extrabold px-3 py-1 rounded-full bg-emerald-500 text-slate-950 shadow-sm";
+              panelContent.className = isLight 
+                ? "text-xs font-mono whitespace-pre-wrap text-emerald-900 bg-emerald-50 p-4 rounded-lg border border-emerald-300 overflow-x-auto leading-relaxed"
+                : "text-xs font-mono whitespace-pre-wrap text-emerald-300 bg-slate-950 p-4 rounded-lg border border-slate-800 overflow-x-auto leading-relaxed";
+              panelContent.innerText = JSON.stringify({
+                allowed: true,
+                reason: "Auto-approved via high-confidence policy decision (Option: ZERO_TOUCH_DEPLOY, Confidence: 0.97 >= 0.93 in 115ms).",
+                deciderMetrics: {
+                  selectedOption: "ZERO_TOUCH_DEPLOY",
+                  confidence: 0.97,
+                  latencyMs: 115
+                },
+                detailedExplanation: null
+              }, null, 2);
+            }, 300);
+          }, 300);
+
+        } else if (scenario === 'security') {
+          document.getElementById('node-decider-choice').innerText = "BLOCK_PRODUCTION";
+          document.getElementById('node-decider-choice').className = "font-extrabold text-sm mt-1 text-rose-400";
+          document.getElementById('node-decider-conf').innerText = "Confiança: 0.98";
+          document.getElementById('node-decider-lat').innerText = "Latência: 118ms";
+
+          setTimeout(() => {
+            nodeRouter.classList.add('border-rose-500', isLight ? 'bg-rose-50' : 'bg-rose-950/40');
+            document.getElementById('node-router-title').innerText = "Acionando Bedrock";
+            document.getElementById('node-router-detail').innerText = "Anthropic Claude 3.5 Sonnet";
+
+            setTimeout(() => {
+              nodeOutcome.classList.add('border-rose-500', isLight ? 'bg-rose-100' : 'bg-rose-950/60', 'glow-red');
+              document.getElementById('node-outcome-title').innerText = "Deploy Bloqueado ❌";
+              document.getElementById('node-outcome-title').className = "font-extrabold text-sm mt-1 text-rose-400";
+              document.getElementById('node-outcome-detail').innerText = "HTTP 422 + Alerta Slack/PR";
+              timer.innerText = "Análise Concluída via Amazon Bedrock";
+
+              panel.classList.remove('hidden');
+              panelTitle.innerText = "Resultado: Smart-Fallback Deep Risk Analysis";
+              panelBadge.innerText = "HTTP 422 Unprocessable";
+              panelBadge.className = "text-xs font-mono font-extrabold px-3 py-1 rounded-full bg-rose-500 text-white shadow-sm";
+              panelContent.className = isLight 
+                ? "text-xs font-mono whitespace-pre-wrap text-rose-950 bg-rose-50 p-4 rounded-lg border border-rose-300 overflow-x-auto leading-relaxed"
+                : "text-xs font-mono whitespace-pre-wrap text-rose-300 bg-slate-950 p-4 rounded-lg border border-slate-800 overflow-x-auto leading-relaxed";
+              panelContent.innerText = `AegisGate Deep Risk Analysis (Powered by Bedrock Claude 3.5 Sonnet):
+• Security Gate Violation: Critical or High CVEs (CVE-2026-3841) detected in authentication hierarchy requiring immediate upgrade/patch.
+• Risk Evaluation: The identified vulnerability permits unauthenticated token elevation under production workload.
+• Action Item: Upgrade spring-security to version 6.3.4+ and re-run pre-flight validation before re-attempting promotion.`;
+            }, 400);
+          }, 300);
+
+        } else {
+          document.getElementById('node-decider-choice').innerText = "REJECT_DEV";
+          document.getElementById('node-decider-choice').className = "font-extrabold text-sm mt-1 text-amber-400";
+          document.getElementById('node-decider-conf').innerText = "Confiança: 0.72";
+          document.getElementById('node-decider-lat').innerText = "Latência: 112ms";
+
+          setTimeout(() => {
+            nodeRouter.classList.add('border-amber-500', isLight ? 'bg-amber-50' : 'bg-amber-950/40');
+            document.getElementById('node-router-title').innerText = "Auditoria de Ambiguidade";
+            document.getElementById('node-router-detail').innerText = "Confiança < Limiar (0.72 < 0.85)";
+
+            setTimeout(() => {
+              nodeOutcome.classList.add('border-amber-500', isLight ? 'bg-amber-100' : 'bg-amber-950/60');
+              document.getElementById('node-outcome-title').innerText = "Gated for Review ⚠️";
+              document.getElementById('node-outcome-title').className = "font-extrabold text-sm mt-1 text-amber-400";
+              document.getElementById('node-outcome-detail').innerText = "HTTP 422 (Preventivo)";
+              timer.innerText = "Bloqueio Preventivo por Incerteza";
+
+              panel.classList.remove('hidden');
+              panelTitle.innerText = "Resultado: Bloqueio Preventivo por Incerteza Estatística";
+              panelBadge.innerText = "HTTP 422 Unprocessable";
+              panelBadge.className = "text-xs font-mono font-extrabold px-3 py-1 rounded-full bg-amber-500 text-slate-950 shadow-sm";
+              panelContent.className = isLight 
+                ? "text-xs font-mono whitespace-pre-wrap text-amber-950 bg-amber-50 p-4 rounded-lg border border-amber-300 overflow-x-auto leading-relaxed"
+                : "text-xs font-mono whitespace-pre-wrap text-amber-300 bg-slate-950 p-4 rounded-lg border border-slate-800 overflow-x-auto leading-relaxed";
+              panelContent.innerText = `AegisGate Deep Risk Analysis (Powered by Bedrock Claude 3.5 Sonnet):
+• Statistical Confidence Alert: Strands Decider 2B returned calibrated confidence (0.72) below safety policy threshold (0.85).
+• Telemetry Incompleteness: Candidate telemetry missing mutation testing verification and schema drift assertions.
+• Action Item: Complete unit test coverage on modified endpoints and verify database migration scripts.`;
+            }, 300);
+          }, 300);
+        }
+      }, 300);
+    }
+  </script>
+</body>
+</html>
